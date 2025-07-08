@@ -5,7 +5,7 @@ const Actors = () => {
     // This component will display a list of actors.
     // It will be rendered when the user navigates to the "/actors/:id" route
   return (
-    <div>actors</div>
+    <div>Actors</div>
   )
 }
 
