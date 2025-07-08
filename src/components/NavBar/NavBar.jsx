@@ -1,12 +1,72 @@
-import React from 'react'
+import React from 'react';
+import { AppBar, Drawer, Button, Avatar, useMediaQuery } from '@mui/material';
+import {
+  Menu as MenuIcon,
+  AccountCircle as AccountCircleIcon,
+  Brightness4 as Brightness4Icon,
+  Brightness7 as Brightness7Icon,
+} from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import { StyledToolbar, MenuButton } from './NavBarStyles';
+import { useTheme } from '@mui/material/styles';
 
 const NavBar = () => {
-    console.log("NavBar component rendered");
-    // This component will display the navigation bar.
-    // It will be rendered on all pages
-    return (
-        <div>NavBar</div>
-    )
-}
+  const isMobile = useMediaQuery('(max-width:600px)');
+  const theme = useTheme();
+    const isAuthenticated = false; // Replace with actual authentication logic
 
-export default NavBar
+  return (
+    <AppBar position="fixed">
+      <StyledToolbar>
+        {isMobile && (
+          <MenuButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={() => {
+              // setMobileOpen(true);
+            }}
+          >
+            <MenuIcon />
+          </MenuButton>
+        )}
+        <MenuButton
+          color="inherit"
+          sx={{ ml: 1 }}
+          onClick={() => {
+            // setMobileOpen(true);
+          }}
+        >
+          {theme.palette.mode === 'dark' ? (
+            <Brightness7Icon />
+          ) : (
+            <Brightness4Icon />
+          )}
+        </MenuButton>
+        {!isMobile && "Search Bar Placeholder   "} {/* Replace with actual search bar component */}
+          <div>
+            {!isAuthenticated ? (
+              <Button color="inherit" component={Link} to="/login">
+                Login &nbsp;<AccountCircleIcon />
+              </Button>
+            ) : (
+              <button
+                color="inherit"
+                component={Link}
+                to={`/profile/`}
+              >
+                {!isMobile && <>My Movies &nbsp;</>}
+                <Avatar
+                  alt="User Avatar"
+                  src="https://via.placeholder.com/40" // Replace with actual user avatar URL
+                />
+              </button>
+            )}
+          </div>
+     
+      </StyledToolbar>
+    </AppBar>
+  );
+};
+
+export default NavBar;
