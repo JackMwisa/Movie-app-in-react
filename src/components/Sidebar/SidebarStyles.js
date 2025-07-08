@@ -14,17 +14,4 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   },
 }));
 
-// For mobile menu icon only
-export const MobileMenuButton = styled(IconButton)(({ theme }) => ({
-  marginRight: theme.spacing(2),
-  display: 'block',
-  [theme.breakpoints.up('sm')]: {
-    display: 'none',
-  },
-}));
-
-// For brightness toggle (always visible)
-export const ThemeToggleButton = styled(IconButton)(({ theme }) => ({
-  marginRight: theme.spacing(2),
-  marginLeft: 1,
-}));
+ 
