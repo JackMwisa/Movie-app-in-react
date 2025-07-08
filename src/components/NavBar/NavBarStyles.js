@@ -10,16 +10,20 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.down('sm')]: {
     marginLeft: '0px',
-    flexWrap: 'wrap ',
+    flexWrap: 'wrap',
   },
 }));
 
-
-export const MenuButton = styled(IconButton)(({ theme }) => ({
+// For mobile menu icon only
+export const MobileMenuButton = styled(IconButton)(({ theme }) => ({
   marginRight: theme.spacing(2),
-  outline: 'none',
   display: 'block',
   [theme.breakpoints.up('sm')]: {
-    display: 'none',  
+    display: 'none',
   },
+}));
+
+// For brightness toggle (always visible)
+export const ThemeToggleButton = styled(IconButton)(({ theme }) => ({
+  marginRight: theme.spacing(2),
 }));
