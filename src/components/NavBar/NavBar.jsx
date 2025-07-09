@@ -58,7 +58,7 @@ const NavBar = () => {
             </AppBar>
 
             <div>
-                <nav>
+                <nav className='drawer'>
                     <StyledToolbar />
                     {/* Add your navigation links here */}
                     {isMobile ? (
