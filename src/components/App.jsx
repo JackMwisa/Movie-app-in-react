@@ -17,6 +17,7 @@ const App = () => {
           <ToolbarSpacer />
         <Routes>
           <Route path="/" element={<Movies />} />
+           <Route path="/movies" element={<Movies />} /> {/* ✅ Add this line */}
           <Route path="/movies/:id" element={<MovieInformation />} />
           <Route path="/actors/:id" element={<Actors />} />
           <Route path="/profile/:id" element={<Profile />} />

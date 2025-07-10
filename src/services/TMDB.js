@@ -1,17 +1,16 @@
-// all calls to the TMDB API should be made through this service
+// TMDB.js
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// TMDB API configuration
-
-const API_KEY = 'your_api_key_here';
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
-const tmdbApi = createApi({
+export const tmdbApi = createApi({
   reducerPath: 'tmdbApi',
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
-    params: {
-      api_key: API_KEY,
+    prepareHeaders: (headers) => {
+      headers.set('Authorization', `Bearer ${API_KEY}`);
+      return headers;
     },
   }),
   endpoints: (builder) => ({
@@ -22,25 +21,3 @@ const tmdbApi = createApi({
 });
 
 export const { useFetchMoviesQuery } = tmdbApi;
-
-
-const tmdb = axios.create({
-  baseURL: BASE_URL,
-  params: {
-    api_key: API_KEY,
-  },
-});
-
-export default tmdb;
-
-export const fetchMovies = async (page = 1) => {
-  try {
-    const response = await tmdb.get('/movie/popular', {
-      params: { page },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching movies:', error);
-    throw error;
-  }
-};
