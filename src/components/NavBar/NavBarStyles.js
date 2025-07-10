@@ -1,6 +1,7 @@
-import { Toolbar, IconButton,  Drawer, Button, Avatar, } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Toolbar, IconButton } from '@mui/material';
 
+// Toolbar with padding/margin
 export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -9,12 +10,12 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   padding: theme.spacing(0, 2),
   marginLeft: '240px',
   [theme.breakpoints.down('sm')]: {
-    marginLeft: '0px',
+    marginLeft: 0,
     flexWrap: 'wrap',
   },
 }));
 
-// For mobile menu icon only
+// Only visible on small screens
 export const MobileMenuButton = styled(IconButton)(({ theme }) => ({
   marginRight: theme.spacing(2),
   display: 'block',
@@ -23,8 +24,8 @@ export const MobileMenuButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-// For brightness toggle (always visible)
+// Brightness toggle
 export const ThemeToggleButton = styled(IconButton)(({ theme }) => ({
   marginRight: theme.spacing(2),
-  marginLeft: 1,
+  marginLeft: theme.spacing(1),
 }));
