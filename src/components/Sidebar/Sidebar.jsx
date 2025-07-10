@@ -15,4 +15,4 @@ const Sidebar = ({setMobileOpen}) => {
   )
 }
 
-export default Sidebar;
+export default Sidebar;``
