@@ -9,11 +9,12 @@ const App = () => {
 
 
   return (
-    <RootContainer>
-      <CssBaseline />
-      <NavBar />
-      <MainContent>
-        <ToolbarSpacer />
+
+      <RootContainer>
+        <CssBaseline />
+        <NavBar />
+        <MainContent>
+          <ToolbarSpacer />
         <Routes>
           <Route path="/" element={<Movies />} />
           <Route path="/movies/:id" element={<MovieInformation />} />
@@ -22,6 +23,7 @@ const App = () => {
         </Routes>
       </MainContent>
     </RootContainer>
+ 
   );
 };
 
