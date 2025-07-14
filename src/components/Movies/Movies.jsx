@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useFetchMoviesQuery } from '../../services/TMDB';
 import { Box, CircularProgress, Typography } from '@mui/material';
-import MovieList from '../MovieList'; // adjust path if needed
+import { MovieList } from '..'; 
 
 const Movies = () => {
   const { data, error, isLoading } = useFetchMoviesQuery();
