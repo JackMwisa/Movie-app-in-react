@@ -16,9 +16,15 @@ const Movies = () => {
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" mt={4}>
-        <CircularProgress />
+        <CircularProgress  />
       </Box>
     );
+  }
+
+  if (!data.results.length){
+    return(
+      Box
+    )
   }
 
   if (error) {
