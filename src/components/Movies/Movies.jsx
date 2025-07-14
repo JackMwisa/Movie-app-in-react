@@ -1,26 +1,42 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { useFetchMoviesQuery } from '../../services/TMDB';
-import { useState, useEffect } from 'react';
-import { Box, CircularProgress, useMediaQuery, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
-
+import { Box, CircularProgress, Typography } from '@mui/material';
+import MovieList from '../MovieList'; // adjust path if needed
 
 const Movies = () => {
+  const { data, error, isLoading } = useFetchMoviesQuery();
+  const [movies, setMovies] = useState([]);
 
-    console.log("Movies component rendered");
+  useEffect(() => {
+    if (data?.results) {
+      setMovies(data.results);
+    }
+  }, [data]);
 
-
-    const { data, error, isLoading } = useFetchMoviesQuery();
-    const [movies, setMovies] = useState([]);
-
-    console.log(data);
-    console.log(error);
-    
-    
-
+  if (isLoading) {
     return (
-        <div>Movies</div>
-    )
-}
+      <Box display="flex" justifyContent="center" mt={4}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-export default Movies
+  if (error) {
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <Typography variant="h6" color="error">
+          Something went wrong: {error.status}
+        </Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Box p={2}>
+      <Typography variant="h4" gutterBottom>Popular Movies</Typography>
+      <MovieList movies={movies} />
+    </Box>
+  );
+};
+
+export default Movies;
