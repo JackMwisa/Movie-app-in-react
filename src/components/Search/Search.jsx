@@ -1,5 +1,5 @@
 // src/components/Search/Search.jsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TextField,
   InputAdornment,
@@ -27,9 +27,7 @@ const Search = () => {
   const [searchVisible, setSearchVisible] = useState(false);
   const [query, setQuery] = useState('');
   const [triggerQuery, setTriggerQuery] = useState('');
-  const inputRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
-
   const navigate = useNavigate();
 
   const { data } = useSearchMoviesQuery(
@@ -37,11 +35,10 @@ const Search = () => {
     { skip: !triggerQuery }
   );
 
-  const debouncedSearch = useRef(
-    debounce((value) => {
-      setTriggerQuery(value);
-    }, 300)
-  ).current;
+  // Debounce search input to reduce API calls
+  const debouncedSearch = debounce((value) => {
+    setTriggerQuery(value);
+  }, 300);
 
   useEffect(() => {
     if (query.trim()) debouncedSearch(query);
@@ -49,15 +46,9 @@ const Search = () => {
   }, [query]);
 
   const toggleSearch = () => {
-    setSearchVisible((prev) => !prev);
+    setSearchVisible(!searchVisible);
     setQuery('');
     setTriggerQuery('');
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-        setAnchorEl(inputRef.current);
-      }
-    }, 100);
   };
 
   const handleSearch = (e) => {
@@ -74,11 +65,11 @@ const Search = () => {
 
   const highlightText = (text, highlight) => {
     const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
-    return parts.map((part, i) =>
+    return parts.map((part, index) =>
       part.toLowerCase() === highlight.toLowerCase() ? (
-        <strong key={i} style={{ color: '#1976d2' }}>{part}</strong>
+        <strong key={index} style={{ color: '#1976d2' }}>{part}</strong>
       ) : (
-        <span key={i}>{part}</span>
+        <span key={index}>{part}</span>
       )
     );
   };
@@ -86,7 +77,10 @@ const Search = () => {
   return (
     <>
       <IconButton
-        onClick={toggleSearch}
+        onClick={(e) => {
+          toggleSearch();
+          setAnchorEl(e.currentTarget);
+        }}
         sx={{ ml: 1 }}
         aria-label={searchVisible ? 'Close Search' : 'Open Search'}
       >
@@ -95,10 +89,10 @@ const Search = () => {
 
       <ClickAwayListener onClickAway={() => setSearchVisible(false)}>
         <div>
-          <StyledSearchBox $visible={searchVisible}>
+          <StyledSearchBox visible={searchVisible}>
             <TextField
-              inputRef={inputRef}
               fullWidth
+              autoFocus
               placeholder="Search movies..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -114,24 +108,20 @@ const Search = () => {
             />
           </StyledSearchBox>
 
-          {searchVisible && anchorEl && query && data?.results?.length > 0 && (
+          {/* Autocomplete Popper */}
+          {searchVisible && query && data?.results?.length > 0 && (
             <Popper
               open
               anchorEl={anchorEl}
               placement="bottom-start"
-              style={{
-                zIndex: 1300,
-                width: anchorEl?.clientWidth || 500,
-                marginTop: 4,
-              }}
+              style={{ zIndex: 9999, width: '100%', maxWidth: 500, marginTop: 8 }}
             >
               <Paper elevation={3}>
                 <List dense>
                   {data.results.slice(0, 5).map((movie) => (
                     <ListItem
-                      key={movie.id}
                       button
-                      component="div"
+                      key={movie.id}
                       onClick={() => handleSuggestionClick(movie)}
                     >
                       <ListItemAvatar>

@@ -1,35 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   AppBar,
   Button,
   Avatar,
   useMediaQuery,
   Drawer,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Menu as MenuIcon,
   AccountCircle as AccountCircleIcon,
   Brightness4 as Brightness4Icon,
   Brightness7 as Brightness7Icon,
-} from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+} from "@mui/icons-material";
+import { Link } from "react-router-dom";
 import {
   StyledToolbar,
   MobileMenuButton,
   ThemeToggleButton,
-} from './NavBarStyles';
-import { useTheme } from '@mui/material/styles';
-import { Sidebar, Search } from '..';
+} from "./NavBarStyles";
+import { useTheme } from "@mui/material/styles";
+import { Sidebar, Search } from "..";
+import { useThemeToggle } from "../../theme/ThemeContext";
 
 const drawerWidth = 240;
 
-
-
 const NavBar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const isMobile = useMediaQuery('(max-width:600px)');
+  const isMobile = useMediaQuery("(max-width:600px)");
   const theme = useTheme();
-  const isAuthenticated = false; // Replace with actual logic
+  const { toggleTheme, isDarkMode } = useThemeToggle(); // FIXED;
+  const isAuthenticated = false; // replace with auth logic
 
   return (
     <>
@@ -45,8 +45,8 @@ const NavBar = () => {
             </MobileMenuButton>
           )}
 
-          <ThemeToggleButton color="inherit" onClick={() => { /* toggleTheme */ }}>
-            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          <ThemeToggleButton color="inherit" onClick={toggleTheme}>
+            {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
           </ThemeToggleButton>
 
           {!isMobile && <Search />}
@@ -73,7 +73,6 @@ const NavBar = () => {
       </AppBar>
 
       <nav className="drawer">
-        {/* Desktop Drawer */}
         {!isMobile && (
           <Drawer
             variant="permanent"
@@ -82,7 +81,7 @@ const NavBar = () => {
               flexShrink: 0,
               [`& .MuiDrawer-paper`]: {
                 width: drawerWidth,
-                boxSizing: 'border-box',
+                boxSizing: "border-box",
               },
             }}
             open
@@ -91,20 +90,17 @@ const NavBar = () => {
           </Drawer>
         )}
 
-        {/* Mobile Drawer */}
         {isMobile && (
           <Drawer
             variant="temporary"
             anchor="right"
             open={mobileOpen}
             onClose={() => setMobileOpen(false)}
-            ModalProps={{
-              keepMounted: true,
-            }}
+            ModalProps={{ keepMounted: true }}
             sx={{
               [`& .MuiDrawer-paper`]: {
                 width: drawerWidth,
-                boxSizing: 'border-box',
+                boxSizing: "border-box",
               },
             }}
           >
