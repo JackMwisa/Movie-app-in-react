@@ -4,6 +4,7 @@ import { SidebarContainer, ImageLink, LogoImage } from './SidebarStyles';
 import { Link } from 'react-router-dom';
 import lightLogo from '../../assets/WHITE.png';
 import darkLogo from '../../assets/RED.png';
+import { useFetchGenresQuery } from '../../services/TMDB';
 
 import {
   Divider,
@@ -15,20 +16,20 @@ import {
 } from '@mui/material';
 
 import MovieIcon from '@mui/icons-material/Movie';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
-import ScienceIcon from '@mui/icons-material/Science';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FlashOnIcon from '@mui/icons-material/FlashOn';
-import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import ExploreIcon from '@mui/icons-material/Explore';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import TheatersIcon from '@mui/icons-material/Theaters';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import UpdateIcon from '@mui/icons-material/Update';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import ScienceIcon from '@mui/icons-material/Science';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import ExploreIcon from '@mui/icons-material/Explore';
+import TheatersIcon from '@mui/icons-material/Theaters';
 
 const categories = [
   { name: 'Popular', path: '/category/popular', icon: <WhatshotIcon /> },
@@ -36,24 +37,27 @@ const categories = [
   { name: 'Upcoming', path: '/category/upcoming', icon: <UpdateIcon /> },
 ];
 
-const genres = [
-  { name: 'Action', path: '/genre/action', icon: <FlashOnIcon /> },
-  { name: 'Comedy', path: '/genre/comedy', icon: <EmojiEmotionsIcon /> },
-  { name: 'Drama', path: '/genre/drama', icon: <TheaterComedyIcon /> },
-  { name: 'Horror', path: '/genre/horror', icon: <VisibilityIcon /> },
-  { name: 'Sci-Fi', path: '/genre/sci-fi', icon: <ScienceIcon /> },
-  { name: 'Romance', path: '/genre/romance', icon: <FavoriteIcon /> },
-  { name: 'Thriller', path: '/genre/thriller', icon: <HelpOutlineIcon /> },
-  { name: 'Documentary', path: '/genre/documentary', icon: <LocalMoviesIcon /> },
-  { name: 'Animation', path: '/genre/animation', icon: <AutoAwesomeIcon /> },
-  { name: 'Fantasy', path: '/genre/fantasy', icon: <TheatersIcon /> },
-  { name: 'Adventure', path: '/genre/adventure', icon: <ExploreIcon /> },
-  { name: 'Mystery', path: '/genre/mystery', icon: <MovieIcon /> },
-];
+// ✅ Map of genre names to icons
+const genreIcons = {
+  Action: <FlashOnIcon />,
+  Comedy: <EmojiEmotionsIcon />,
+  Drama: <TheaterComedyIcon />,
+  Horror: <VisibilityIcon />,
+  'Science Fiction': <ScienceIcon />,
+  Romance: <FavoriteIcon />,
+  Thriller: <HelpOutlineIcon />,
+  Documentary: <LocalMoviesIcon />,
+  Animation: <AutoAwesomeIcon />,
+  Adventure: <ExploreIcon />,
+  Fantasy: <TheatersIcon />,
+  Mystery: <MovieIcon />,
+};
 
 const Sidebar = ({ setMobileOpen }) => {
   const theme = useTheme();
   const logo = theme.palette.mode === 'light' ? lightLogo : darkLogo;
+
+  const { data, isLoading, error } = useFetchGenresQuery();
 
   return (
     <SidebarContainer>
@@ -99,32 +103,43 @@ const Sidebar = ({ setMobileOpen }) => {
       {/* Genres Section */}
       <List>
         <ListSubheader>Genres</ListSubheader>
-        {genres.map((genre) => (
-          <ListItem
-            button
-            component={Link}
-            to={genre.path}
-            key={genre.name}
-            onClick={() => setMobileOpen(false)}
-            sx={{
-              textDecoration: 'none',
-              color: theme.palette.text.primary,
-            }}
-          >
-            <ListItemIcon
+        {isLoading ? (
+          <ListItem>
+            <ListItemText primary="Loading genres..." />
+          </ListItem>
+        ) : error ? (
+          <ListItem>
+            <ListItemText primary="Failed to load genres" />
+          </ListItem>
+        ) : (
+          data.genres.map((genre) => (
+            <ListItem
+              button
+              component={Link}
+              to={`/genre/${genre.id}`}
+              key={genre.id}
+              onClick={() => setMobileOpen(false)}
               sx={{
+                textDecoration: 'none',
                 color: theme.palette.text.primary,
-                transition: 'color 0.3s',
-                '&:hover': {
-                  color: theme.palette.primary.main,
-                },
               }}
             >
-              {genre.icon}
-            </ListItemIcon>
-            <ListItemText primary={genre.name} />
-          </ListItem>
-        ))}
+              <ListItemIcon
+                sx={{
+                  color: theme.palette.text.primary,
+                  transition: 'color 0.3s',
+                  '&:hover': {
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
+                {/* ✅ Use matching icon or fallback */}
+                {genreIcons[genre.name] || <MovieIcon />}
+              </ListItemIcon>
+              <ListItemText primary={genre.name} />
+            </ListItem>
+          ))
+        )}
       </List>
     </SidebarContainer>
   );

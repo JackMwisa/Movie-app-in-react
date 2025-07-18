@@ -1,7 +1,5 @@
-// TMDB.js
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// Ensure this is a TMDB v4 Bearer token
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -26,6 +24,18 @@ export const tmdbApi = createApi({
       query: ({ query, page = 1 }) =>
         `/search/movie?query=${encodeURIComponent(query)}&page=${page}`,
     }),
+    fetchGenres: builder.query({
+      query: () => `/genre/movie/list`,
+    }),
+    fetchMovieVideos: builder.query({
+      query: (id) => `/movie/${id}/videos`,
+    }),
+    fetchMovieCredits: builder.query({
+      query: (id) => `/movie/${id}/credits`,
+    }),
+    fetchRecommendedMovies: builder.query({
+      query: (id) => `/movie/${id}/recommendations`,
+    }),
   }),
 });
 
@@ -33,4 +43,8 @@ export const {
   useFetchMoviesQuery,
   useFetchMovieDetailsQuery,
   useSearchMoviesQuery,
+  useFetchGenresQuery,
+  useFetchMovieVideosQuery,
+  useFetchMovieCreditsQuery,
+  useFetchRecommendedMoviesQuery,
 } = tmdbApi;
