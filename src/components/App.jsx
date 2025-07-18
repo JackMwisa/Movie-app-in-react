@@ -16,7 +16,7 @@ import GenrePage from '../pages/GenrePage';
 import SearchResults from '../pages/SearchResults';
 import InfiniteScrollMovies from '../pages/InfiniteScrollMovies';
 import InfiniteScrollSeries from '../pages/InfiniteScrollSeries'; // ✅ New
-import SeriesByGenrePage from '../pages/SeriesByGenrePage';     // ✅ New
+// import SeriesByGenrePage from '../pages/SeriesByGenrePage';     // ✅ New
 
 import {
   RootContainer,
@@ -44,7 +44,7 @@ const App = () => {
           {/* ✅ Series paths */}
           <Route path="/series" element={<Series />} />
           <Route path="/series/:id" element={<SeriesInformation />} />
-          <Route path="/tvgenre/:name" element={<SeriesByGenrePage />} />
+          {/* <Route path="/tvgenre/:name" element={<SeriesByGenrePage />} /> */}
           <Route path="/tvcategory/:type" element={<InfiniteScrollSeries />} />
         </Routes>
       </MainContent>

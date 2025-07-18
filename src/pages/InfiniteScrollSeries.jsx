@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import { useInView } from 'react-intersection-observer';
 import { motion, AnimatePresence } from 'framer-motion';
-import SerieList from '../../components/SerieList/SerieList';
-import { useFetchPopularSeriesQuery } from '../../services/TMDB';
+import SerieList from '../components/SerieList/SerieList';
+import { useFetchPopularSeriesQuery } from '../services/TMDB';
 
 const InfiniteScrollSeries = () => {
   const [page, setPage] = useState(1);
