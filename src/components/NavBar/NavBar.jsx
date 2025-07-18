@@ -19,7 +19,7 @@ import {
   ThemeToggleButton,
 } from './NavBarStyles';
 import { useTheme } from '@mui/material/styles';
-import Sidebar from '../Sidebar/Sidebar';
+import { Sidebar, Search } from '..';
 
 const drawerWidth = 240;
 
@@ -49,7 +49,7 @@ const NavBar = () => {
             {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </ThemeToggleButton>
 
-          {!isMobile && 'Search...'}
+          {!isMobile && <Search />}
 
           <div>
             {!isAuthenticated ? (
@@ -68,7 +68,7 @@ const NavBar = () => {
             )}
           </div>
 
-          {isMobile && 'Search...'}
+          {isMobile && <Search />}
         </StyledToolbar>
       </AppBar>
 

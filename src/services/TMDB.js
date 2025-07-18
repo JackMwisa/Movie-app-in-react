@@ -14,29 +14,53 @@ export const tmdbApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    fetchMovies: builder.query({
+    //  Popular Movies
+    fetchPopularMovies: builder.query({
       query: (page = 1) => `/movie/popular?page=${page}`,
     }),
+
+    //  Top Rated Movies
+    fetchTopRatedMovies: builder.query({
+      query: (page = 1) => `/movie/top_rated?page=${page}`,
+    }),
+
+    //  Upcoming Movies
+    fetchUpcomingMovies: builder.query({
+      query: (page = 1) => `/movie/upcoming?page=${page}`,
+    }),
+
+    //  Movie Details
     fetchMovieDetails: builder.query({
       query: (id) => `/movie/${id}`,
     }),
+
+    //  Search Movies
     searchMovies: builder.query({
       query: ({ query, page = 1 }) =>
         `/search/movie?query=${encodeURIComponent(query)}&page=${page}`,
     }),
+
+    //  Genres
     fetchGenres: builder.query({
       query: () => `/genre/movie/list`,
     }),
+
+    //  Movie Videos (like trailers)
     fetchMovieVideos: builder.query({
       query: (id) => `/movie/${id}/videos`,
     }),
+
+    //  Movie Cast and Crew
     fetchMovieCredits: builder.query({
       query: (id) => `/movie/${id}/credits`,
     }),
+
+    //  Recommended Movies
     fetchRecommendedMovies: builder.query({
       query: (id) => `/movie/${id}/recommendations`,
     }),
-    // ✅ Genre query
+
+    //  Movies by Genre Name
     fetchMoviesByGenre: builder.query({
       query: (genreName) => {
         const genreMap = {
@@ -64,16 +88,30 @@ export const tmdbApi = createApi({
         return `/discover/movie?with_genres=${id}`;
       },
     }),
+
+    //  Actor Info
+    fetchActorDetails: builder.query({
+      query: (id) => `/person/${id}`,
+    }),
+
+    // Movies by Actor
+    fetchActorMovies: builder.query({
+      query: (id) => `/person/${id}/movie_credits`,
+    }),
   }),
 });
 
 export const {
-  useFetchMoviesQuery,
+  useFetchPopularMoviesQuery,
+  useFetchTopRatedMoviesQuery,
+  useFetchUpcomingMoviesQuery,
   useFetchMovieDetailsQuery,
   useSearchMoviesQuery,
   useFetchGenresQuery,
   useFetchMovieVideosQuery,
   useFetchMovieCreditsQuery,
   useFetchRecommendedMoviesQuery,
-  useFetchMoviesByGenreQuery, // ✅ Export genre query hook
+  useFetchMoviesByGenreQuery,
+  useFetchActorDetailsQuery,
+  useFetchActorMoviesQuery,
 } = tmdbApi;

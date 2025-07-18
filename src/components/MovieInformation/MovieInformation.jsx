@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {
   useFetchMovieDetailsQuery,
   useFetchMovieVideosQuery,
@@ -34,6 +34,8 @@ import {
   StyledLinkCard,
 } from './MovieInformationStyle';
 
+import { useNavigate } from 'react-router-dom';
+
 const MovieInformation = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -62,7 +64,6 @@ const MovieInformation = () => {
 
   return (
     <RootContainer>
-      {/* Back Button */}
       <BackButtonContainer>
         <Button
           startIcon={<ArrowBackIcon />}
@@ -73,7 +74,6 @@ const MovieInformation = () => {
         </Button>
       </BackButtonContainer>
 
-      {/* Movie Poster & Info */}
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <PosterImage
@@ -104,7 +104,7 @@ const MovieInformation = () => {
 
           <Typography paragraph>{data.overview}</Typography>
 
-          {/* Genre Chips with navigation */}
+          {/* Genre Chips with Link */}
           <GenreChipContainer>
             {data.genres.map((genre) => (
               <Chip
@@ -112,9 +112,8 @@ const MovieInformation = () => {
                 label={genre.name}
                 color="primary"
                 clickable
-                onClick={() =>
-                  navigate(`/genre/${encodeURIComponent(genre.name.toLowerCase())}`)
-                }
+                component={Link}
+                to={`/genre/${encodeURIComponent(genre.name.toLowerCase())}`}
               />
             ))}
           </GenreChipContainer>
@@ -146,7 +145,9 @@ const MovieInformation = () => {
           <Grid container spacing={2}>
             {cast.map((actor) => (
               <Grid item xs={6} md={2} key={actor.id}>
-                <ActorCard>
+                <StyledLinkCard to={`/actors/${actor.id}`}>
+
+                <ActorCard >
                   <StyledCardMedia
                     component="img"
                     image={
@@ -165,6 +166,7 @@ const MovieInformation = () => {
                     </Typography>
                   </StyledCardContent>
                 </ActorCard>
+                </StyledLinkCard>
               </Grid>
             ))}
           </Grid>
@@ -198,10 +200,11 @@ const MovieInformation = () => {
                   <RecommendedCard>
                     <RecommendedCardMedia
                       component="img"
+                      height="300"
                       image={
                         movie.poster_path
                           ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
-                          : 'https://via.placeholder.com/200x300?text=No+Image'
+                          : 'https://via.placeholder.com/300x450?text=No+Image'
                       }
                     />
                     <RecommendedCardContent>

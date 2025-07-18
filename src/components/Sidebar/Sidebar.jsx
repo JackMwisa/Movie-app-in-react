@@ -37,7 +37,7 @@ const categories = [
   { name: 'Upcoming', path: '/category/upcoming', icon: <UpdateIcon /> },
 ];
 
-// ✅ Map of genre names to icons
+//  Map of genre names to icons
 const genreIcons = {
   Action: <FlashOnIcon />,
   Comedy: <EmojiEmotionsIcon />,

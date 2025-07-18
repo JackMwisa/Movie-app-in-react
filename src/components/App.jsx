@@ -3,6 +3,8 @@ import { CssBaseline } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import { Actors, Movies, MovieInformation, NavBar, Profile } from './index';
 import GenrePage from '../pages/GenrePage';
+import SearchResults from '../pages/SearchResults';
+import InfiniteScrollMovies from '../pages/InfiniteScrollMovies';
 import {
   RootContainer,
   MainContent,
@@ -22,7 +24,10 @@ const App = () => {
           <Route path="/movies/:id" element={<MovieInformation />} />
           <Route path="/genre/:name" element={<GenrePage />} />
           <Route path="/actors/:id" element={<Actors />} />
+          <Route path="/category/:type" element={<InfiniteScrollMovies />} />
+
           <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/search/:query" element={<SearchResults />} /> 
         </Routes>
       </MainContent>
     </RootContainer>
