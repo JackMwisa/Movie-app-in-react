@@ -36,6 +36,34 @@ export const tmdbApi = createApi({
     fetchRecommendedMovies: builder.query({
       query: (id) => `/movie/${id}/recommendations`,
     }),
+    // ✅ Genre query
+    fetchMoviesByGenre: builder.query({
+      query: (genreName) => {
+        const genreMap = {
+          action: 28,
+          adventure: 12,
+          animation: 16,
+          comedy: 35,
+          crime: 80,
+          documentary: 99,
+          drama: 18,
+          family: 10751,
+          fantasy: 14,
+          history: 36,
+          horror: 27,
+          music: 10402,
+          mystery: 9648,
+          romance: 10749,
+          sciencefiction: 878,
+          tvmovie: 10770,
+          thriller: 53,
+          war: 10752,
+          western: 37,
+        };
+        const id = genreMap[genreName.toLowerCase().replace(/\s/g, '')];
+        return `/discover/movie?with_genres=${id}`;
+      },
+    }),
   }),
 });
 
@@ -47,4 +75,5 @@ export const {
   useFetchMovieVideosQuery,
   useFetchMovieCreditsQuery,
   useFetchRecommendedMoviesQuery,
+  useFetchMoviesByGenreQuery, // ✅ Export genre query hook
 } = tmdbApi;

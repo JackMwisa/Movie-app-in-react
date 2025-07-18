@@ -116,7 +116,7 @@ const Sidebar = ({ setMobileOpen }) => {
             <ListItem
               button
               component={Link}
-              to={`/genre/${genre.id}`}
+              to={`/genre/${encodeURIComponent(genre.name)}`}
               key={genre.id}
               onClick={() => setMobileOpen(false)}
               sx={{
