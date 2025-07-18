@@ -2,9 +2,14 @@ import React from 'react';
 import { useTheme } from '@emotion/react';
 import { SidebarContainer, ImageLink, LogoImage } from './SidebarStyles';
 import { Link } from 'react-router-dom';
+
 import lightLogo from '../../assets/WHITE.png';
 import darkLogo from '../../assets/RED.png';
-import { useFetchGenresQuery } from '../../services/TMDB';
+
+import {
+  useFetchGenresQuery,
+  useFetchTVGenresQuery, // ✅ New
+} from '../../services/TMDB';
 
 import {
   Divider,
@@ -30,11 +35,20 @@ import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import ExploreIcon from '@mui/icons-material/Explore';
 import TheatersIcon from '@mui/icons-material/Theaters';
+import TvIcon from '@mui/icons-material/Tv';
+import LiveTvIcon from '@mui/icons-material/LiveTv';
+import ScheduleIcon from '@mui/icons-material/Schedule';
 
-const categories = [
+const movieCategories = [
   { name: 'Popular', path: '/category/popular', icon: <WhatshotIcon /> },
   { name: 'Top Rated', path: '/category/top_rated', icon: <StarRateIcon /> },
   { name: 'Upcoming', path: '/category/upcoming', icon: <UpdateIcon /> },
+];
+
+const tvCategories = [
+  { name: 'Popular Series', path: '/tv/popular', icon: <TvIcon /> },
+  { name: 'Top Rated Series', path: '/tv/top_rated', icon: <StarRateIcon /> },
+  { name: 'Currently Airing', path: '/tv/on_the_air', icon: <ScheduleIcon /> },
 ];
 
 //  Map of genre names to icons
@@ -57,7 +71,17 @@ const Sidebar = ({ setMobileOpen }) => {
   const theme = useTheme();
   const logo = theme.palette.mode === 'light' ? lightLogo : darkLogo;
 
-  const { data, isLoading, error } = useFetchGenresQuery();
+  const {
+    data: movieGenresData,
+    isLoading: loadingMovieGenres,
+    error: movieGenresError,
+  } = useFetchGenresQuery();
+
+  const {
+    data: tvGenresData,
+    isLoading: loadingTVGenres,
+    error: tvGenresError,
+  } = useFetchTVGenresQuery(); // ✅
 
   return (
     <SidebarContainer>
@@ -67,10 +91,10 @@ const Sidebar = ({ setMobileOpen }) => {
 
       <Divider />
 
-      {/* Categories Section */}
+      {/* 🎬 Movie Categories */}
       <List>
-        <ListSubheader>Categories</ListSubheader>
-        {categories.map((item) => (
+        <ListSubheader>Movie Categories</ListSubheader>
+        {movieCategories.map((item) => (
           <ListItem
             button
             component={Link}
@@ -100,24 +124,57 @@ const Sidebar = ({ setMobileOpen }) => {
 
       <Divider />
 
-      {/* Genres Section */}
+      {/* 📺 TV Series Categories */}
       <List>
-        <ListSubheader>Genres</ListSubheader>
-        {isLoading ? (
-          <ListItem>
-            <ListItemText primary="Loading genres..." />
+        <ListSubheader>TV Series</ListSubheader>
+        {tvCategories.map((item) => (
+          <ListItem
+            button
+            component={Link}
+            to={item.path}
+            key={item.name}
+            onClick={() => setMobileOpen(false)}
+            sx={{
+              textDecoration: 'none',
+              color: theme.palette.text.primary,
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                color: theme.palette.text.primary,
+                transition: 'color 0.3s',
+                '&:hover': {
+                  color: theme.palette.primary.main,
+                },
+              }}
+            >
+              {item.icon}
+            </ListItemIcon>
+            <ListItemText primary={item.name} />
           </ListItem>
-        ) : error ? (
+        ))}
+      </List>
+
+      <Divider />
+
+      {/* 🎭 Movie Genres */}
+      <List>
+        <ListSubheader>Movie Genres</ListSubheader>
+        {loadingMovieGenres ? (
           <ListItem>
-            <ListItemText primary="Failed to load genres" />
+            <ListItemText primary="Loading..." />
+          </ListItem>
+        ) : movieGenresError ? (
+          <ListItem>
+            <ListItemText primary="Failed to load movie genres" />
           </ListItem>
         ) : (
-          data.genres.map((genre) => (
+          movieGenresData.genres.map((genre) => (
             <ListItem
               button
               component={Link}
               to={`/genre/${encodeURIComponent(genre.name)}`}
-              key={genre.id}
+              key={`movie-${genre.id}`}
               onClick={() => setMobileOpen(false)}
               sx={{
                 textDecoration: 'none',
@@ -133,8 +190,50 @@ const Sidebar = ({ setMobileOpen }) => {
                   },
                 }}
               >
-                {/* ✅ Use matching icon or fallback */}
                 {genreIcons[genre.name] || <MovieIcon />}
+              </ListItemIcon>
+              <ListItemText primary={genre.name} />
+            </ListItem>
+          ))
+        )}
+      </List>
+
+      <Divider />
+
+      {/* 📺 TV Genres */}
+      <List>
+        <ListSubheader>TV Genres</ListSubheader>
+        {loadingTVGenres ? (
+          <ListItem>
+            <ListItemText primary="Loading..." />
+          </ListItem>
+        ) : tvGenresError ? (
+          <ListItem>
+            <ListItemText primary="Failed to load TV genres" />
+          </ListItem>
+        ) : (
+          tvGenresData.genres.map((genre) => (
+            <ListItem
+              button
+              component={Link}
+              to={`/tv-genre/${encodeURIComponent(genre.name)}`}
+              key={`tv-${genre.id}`}
+              onClick={() => setMobileOpen(false)}
+              sx={{
+                textDecoration: 'none',
+                color: theme.palette.text.primary,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  color: theme.palette.text.primary,
+                  transition: 'color 0.3s',
+                  '&:hover': {
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
+                {genreIcons[genre.name] || <TvIcon />}
               </ListItemIcon>
               <ListItemText primary={genre.name} />
             </ListItem>

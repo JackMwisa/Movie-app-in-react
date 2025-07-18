@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import { useInView } from 'react-intersection-observer';
-import MovieList from '../components/MovieList/MovieList'; 
+import { motion, AnimatePresence } from 'framer-motion';
+import MovieList from '../components/MovieList/MovieList';
 import { useParams } from 'react-router-dom';
 import {
   useFetchPopularMoviesQuery,
@@ -9,17 +10,14 @@ import {
   useFetchUpcomingMoviesQuery,
 } from '../services/TMDB';
 
-
-
-
 const InfiniteScrollMovies = () => {
-  const { type } = useParams();  
+  const { type } = useParams();
   const [page, setPage] = useState(1);
   const [allMovies, setAllMovies] = useState([]);
 
   const fetchers = {
     popular: useFetchPopularMoviesQuery,
-    'top_rated': useFetchTopRatedMoviesQuery,
+    top_rated: useFetchTopRatedMoviesQuery,
     upcoming: useFetchUpcomingMoviesQuery,
   };
 
@@ -61,10 +59,28 @@ const InfiniteScrollMovies = () => {
         {type.replace('-', ' ')} Movies
       </Typography>
 
-      <MovieList movies={allMovies} />
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={type}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.4 }}
+        >
+          <MovieList movies={allMovies} />
+        </motion.div>
+      </AnimatePresence>
 
       <Box ref={ref} display="flex" justifyContent="center" mt={3}>
-        {isFetching && <CircularProgress />}
+        {isFetching && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <CircularProgress />
+          </motion.div>
+        )}
       </Box>
 
       {error && (
@@ -77,4 +93,3 @@ const InfiniteScrollMovies = () => {
 };
 
 export default InfiniteScrollMovies;
- 
