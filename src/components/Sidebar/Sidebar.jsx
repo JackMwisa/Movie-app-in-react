@@ -46,10 +46,11 @@ const movieCategories = [
 ];
 
 const tvCategories = [
-  { name: 'Popular Series', path: '/tv/popular', icon: <TvIcon /> },
-  { name: 'Top Rated Series', path: '/tv/top_rated', icon: <StarRateIcon /> },
-  { name: 'Currently Airing', path: '/tv/on_the_air', icon: <ScheduleIcon /> },
+  { name: 'Popular Series', path: '/tvcategory/popular', icon: <TvIcon /> },
+  { name: 'Top Rated Series', path: '/tvcategory/top_rated', icon: <StarRateIcon /> },
+  { name: 'Currently Airing', path: '/tvcategory/on_the_air', icon: <ScheduleIcon /> },
 ];
+
 
 //  Map of genre names to icons
 const genreIcons = {
@@ -173,7 +174,7 @@ const Sidebar = ({ setMobileOpen }) => {
             <ListItem
               button
               component={Link}
-              to={`/genre/${encodeURIComponent(genre.name)}`}
+              to={`/Movies/${encodeURIComponent(genre.name)}`}
               key={`movie-${genre.id}`}
               onClick={() => setMobileOpen(false)}
               sx={{
