@@ -1,3 +1,4 @@
+// src/components/Search/Search.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import {
   TextField,
@@ -56,7 +57,7 @@ const Search = () => {
         inputRef.current.focus();
         setAnchorEl(inputRef.current);
       }
-    }, 100); // Ensure DOM is ready
+    }, 100);
   };
 
   const handleSearch = (e) => {
@@ -94,7 +95,7 @@ const Search = () => {
 
       <ClickAwayListener onClickAway={() => setSearchVisible(false)}>
         <div>
-          <StyledSearchBox visible={searchVisible}>
+          <StyledSearchBox $visible={searchVisible}>
             <TextField
               inputRef={inputRef}
               fullWidth
@@ -118,14 +119,19 @@ const Search = () => {
               open
               anchorEl={anchorEl}
               placement="bottom-start"
-              style={{ zIndex: 1300, width: anchorEl?.clientWidth || 500 }}
+              style={{
+                zIndex: 1300,
+                width: anchorEl?.clientWidth || 500,
+                marginTop: 4,
+              }}
             >
               <Paper elevation={3}>
                 <List dense>
                   {data.results.slice(0, 5).map((movie) => (
                     <ListItem
-                      button
                       key={movie.id}
+                      button
+                      component="div"
                       onClick={() => handleSuggestionClick(movie)}
                     >
                       <ListItemAvatar>
