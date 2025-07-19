@@ -14,7 +14,7 @@ export const tmdbApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    // 🔹 MOVIES
+    //  MOVIES
     fetchPopularMovies: builder.query({
       query: (page = 1) => `/movie/popular?page=${page}`,
     }),
@@ -83,7 +83,7 @@ export const tmdbApi = createApi({
       query: (genreId) => `/discover/tv?with_genres=${genreId}`,
     }),
 
-    // 🔹 MULTI & ACTORS
+    //  MULTI & ACTORS
     searchMulti: builder.query({
       query: ({ query, page = 1 }) =>
         `/search/multi?query=${encodeURIComponent(query)}&page=${page}`,
