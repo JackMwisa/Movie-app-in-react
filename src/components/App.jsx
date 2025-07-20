@@ -35,16 +35,16 @@ const App = () => {
           <Route path="/" element={<Movies />} />
           <Route path="/movies" element={<Movies />} />
           <Route path="/movies/:id" element={<MovieInformation />} />
-          <Route path="/genre/:name" element={<GenrePage />} />
+          <Route path="/Movies/:name" element={<GenrePage />} />
           <Route path="/actors/:id" element={<Actors />} />
           <Route path="/category/:type" element={<InfiniteScrollMovies />} />
           <Route path="/search/:query" element={<SearchResults />} />
           <Route path="/profile/:id" element={<Profile />} />
 
-          {/* ✅ Series paths */}
+          {/*  Series paths */}
           <Route path="/series" element={<Series />} />
           <Route path="/series/:id" element={<SeriesInformation />} />
-          <Route path="/tvgenre/:name" element={<SeriesByGenrePage />} />
+          <Route path="/tv-genre/:name" element={<SeriesByGenrePage />} />
           <Route path="/tvcategory/:type" element={<InfiniteScrollSeries />} />
         </Routes>
       </MainContent>

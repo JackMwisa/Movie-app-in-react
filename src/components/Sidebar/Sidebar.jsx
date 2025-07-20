@@ -82,7 +82,7 @@ const Sidebar = ({ setMobileOpen }) => {
     data: tvGenresData,
     isLoading: loadingTVGenres,
     error: tvGenresError,
-  } = useFetchTVGenresQuery(); // ✅
+  } = useFetchTVGenresQuery(); 
 
   return (
     <SidebarContainer>
