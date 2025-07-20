@@ -15,8 +15,8 @@ import {
 import GenrePage from '../pages/GenrePage';
 import SearchResults from '../pages/SearchResults';
 import InfiniteScrollMovies from '../pages/InfiniteScrollMovies';
-import InfiniteScrollSeries from '../pages/InfiniteScrollSeries'; // ✅ New
-import SeriesByGenrePage from '../pages/SeriesByGenrePage';     // ✅ New
+import InfiniteScrollSeries from '../pages/InfiniteScrollSeries';  
+import SeriesByGenrePage from '../pages/SeriesByGenrePage';      
 
 import {
   RootContainer,

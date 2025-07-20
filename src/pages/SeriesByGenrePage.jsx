@@ -3,8 +3,8 @@ import { Box, Typography, CircularProgress } from '@mui/material';
 import { useInView } from 'react-intersection-observer';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams } from 'react-router-dom';
-import SerieList from '../components/SerieList/SerieList'; // ✅ Your component for TV series display
-import { useFetchTVGenresQuery, useSearchTVShowsQuery } from '../services/TMDB';
+import SerieList from '../components/SerieList/SerieList';
+import { useFetchTVGenresQuery, useFetchSeriesByGenreQuery } from '../services/TMDB'; 
 
 const SeriesByGenrePage = () => {
   const { name } = useParams();
@@ -15,23 +15,21 @@ const SeriesByGenrePage = () => {
   const { data: genresData } = useFetchTVGenresQuery();
   const { ref, inView } = useInView();
 
-  // Dynamically create a genre map and find genre ID
+  // Find genre ID from name
   useEffect(() => {
     if (genresData?.genres?.length) {
-      const genreMap = genresData.genres.reduce((acc, genre) => {
-        acc[genre.name.toLowerCase()] = genre.id;
-        return acc;
-      }, {});
-      const matchedId = genreMap[name?.toLowerCase()];
-      setGenreId(matchedId || null);
+      const genre = genresData.genres.find(
+        (g) => g.name.toLowerCase() === name.toLowerCase()
+      );
+      setGenreId(genre?.id || null);
     }
   }, [genresData, name]);
 
-  // Custom fetch using searchTVShowsQuery by genre (fallback if API doesn't have genre discover for TV)
-  const { data, isFetching, error } = useSearchTVShowsQuery({
-    query: name,
-    page,
-  });
+  // Use discover endpoint with genre ID
+  const { data, isFetching, error } = useFetchSeriesByGenreQuery(
+    { genreId, page },
+    { skip: !genreId }
+  );
 
   useEffect(() => {
     if (data?.results) {
@@ -40,10 +38,10 @@ const SeriesByGenrePage = () => {
   }, [data]);
 
   useEffect(() => {
-    if (inView && !isFetching) {
+    if (inView && !isFetching && genreId) {
       setPage((prev) => prev + 1);
     }
-  }, [inView, isFetching]);
+  }, [inView, isFetching, genreId]);
 
   useEffect(() => {
     setAllSeries([]);
